@@ -19,11 +19,12 @@ public class NetworkManager {
     
     // MARK: - Constants
     private(set) var baseUrl: String
-    
+    private(set) var imageBaseUrl: String
     private(set) var apiKey: String
     
     // MARK: - Initializer
     init() {
+        self.imageBaseUrl = "https://image.tmdb.org/t/p/"
         self.baseUrl = "https://api.themoviedb.org/3/movie/"
         self.apiKey = "3298880137172cea814f46805f3df4fe"
     }

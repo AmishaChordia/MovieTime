@@ -10,10 +10,9 @@ import UIKit
 
 class BaseViewController: UIViewController {
    
-    struct SearchBarConstants {
-        static let searchBarHeight: CGFloat = 46.0
-        static let searchBarBorderWidth: CGFloat = 0.5
-    }
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

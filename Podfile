@@ -5,6 +5,7 @@ target 'MovieTime' do
   use_frameworks!
 
   pod 'Alamofire', '4.9.1'
+  pod 'SDWebImage', '~> 5.0'
 
   target 'MovieTimeTests' do
     inherit! :search_paths

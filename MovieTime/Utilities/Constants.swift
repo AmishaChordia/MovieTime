@@ -6,8 +6,19 @@
 //  Copyright © 2020 Amisha. All rights reserved.
 //
 
+import UIKit
 
 public struct Constants {
+    struct ImageDimension {
+        static let small = "w200"
+        static let large = "w500"
+    }
+    
+    struct SearchBarConstants {
+        static let searchBarHeight: CGFloat = 46.0
+        static let searchBarBorderWidth: CGFloat = 0.5
+    }
+    
     /// Constants for Network
     struct NetworkKeys {
         /// networkTimeout defines the timeout network requests creations in seconds
