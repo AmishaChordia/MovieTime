@@ -9,19 +9,26 @@
 import Foundation
 
 protocol DashboardViewModelProtocol: class {
-    func didFetchPlayingNowMovies(movieList: [Movie])
+    func didFetchPlayingNowMoviesSuccessfully()
     func didFailFetchingPlayingNowMovies(error: Error)
 }
 
 class DashboardViewModel {
     
+    private var movieList = [Movie]()
+    
     weak var delegate: DashboardViewModelProtocol?
     
     init() {}
     
-    func getPlayingNowMovies() {
+    func getPlayingNowMovies() -> [Movie] {
+        return movieList
+    }
+    
+    func fetchPlayingNowMovies() {
         NetworkManager().fetchPlayingNowMovies(success: { [weak self] (movies) in
-            self?.delegate?.didFetchPlayingNowMovies(movieList: movies)
+            self?.movieList = movies
+            self?.delegate?.didFetchPlayingNowMoviesSuccessfully()
         }) { [weak self] (error) in
             self?.delegate?.didFailFetchingPlayingNowMovies(error: error)
         }

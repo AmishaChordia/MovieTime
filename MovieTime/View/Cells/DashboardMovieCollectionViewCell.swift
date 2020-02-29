@@ -26,7 +26,6 @@ final class DashboardMovieCollectionViewCell: UICollectionViewCell {
         ratingLabel.text = nil
         movieImageView.image = nil
         movieStarRatingImageView.image = nil
-
     }
     
     func setInfo(title: String, date: String, rating: Double?, imagePath: String) {

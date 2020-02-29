@@ -7,9 +7,7 @@
 //
 
 struct MovieReview: Codable {
-    let id: Int
-    let page: Int
-    let result: [MovieReviewResult]
+    let results: [MovieReviewResult]
 }
 
 struct MovieReviewResult: Codable {

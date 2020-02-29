@@ -54,7 +54,7 @@ extension NetworkManager {
         
         execute(request: request, parseBlock: parseBlock, success: { (result) in
             if let resultValue = result as? MovieReview {
-                success(resultValue.result)
+                success(resultValue.results)
             } else {
                 print("parse error")
                 failure(ErrorManager.error(code: 1001, errorDescription: Constants.ErrorKeys.dataParsingError))

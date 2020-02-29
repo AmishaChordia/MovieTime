@@ -21,16 +21,10 @@ class DashboardViewController: BaseViewController {
     
     private let dashboardViewModel = DashboardViewModel()
     
-    private var movieList = [Movie]() {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         dashboardViewModel.delegate = self
-        dashboardViewModel.getPlayingNowMovies()
+        dashboardViewModel.fetchPlayingNowMovies()
         setupView()
     }
     
@@ -46,8 +40,10 @@ class DashboardViewController: BaseViewController {
 }
 
 extension DashboardViewController: DashboardViewModelProtocol {
-    func didFetchPlayingNowMovies(movieList: [Movie]) {
-        self.movieList = movieList
+    func didFetchPlayingNowMoviesSuccessfully() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
     
     func didFailFetchingPlayingNowMovies(error: Error) {
@@ -58,7 +54,7 @@ extension DashboardViewController: DashboardViewModelProtocol {
 
 extension DashboardViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movieList.count
+        return dashboardViewModel.getPlayingNowMovies().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -67,7 +63,7 @@ extension DashboardViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let movie = movieList[indexPath.item]
+        let movie = dashboardViewModel.getPlayingNowMovies()[indexPath.item]
         cell.setInfo(title: movie.title, date: movie.release_date, rating: movie.vote_average, imagePath: DashboardViewController.DashboardConstants.imageUrlPath + movie.poster_path)
         return cell
     }
@@ -79,5 +75,14 @@ extension DashboardViewController: UICollectionViewDelegateFlowLayout {
                          sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.frame.size.width - DashboardConstants.collectionCellPadding)/2
         return CGSize(width: width, height: DashboardConstants.collectionCellHeight)
+    }
+}
+
+extension DashboardViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let detailViewController = storyboard?.instantiateViewController(withIdentifier: "MovieDetailViewController") as? MovieDetailViewController {
+            detailViewController.movieId = String(dashboardViewModel.getPlayingNowMovies()[indexPath.item].id)
+            navigationController?.pushViewController(detailViewController, animated: true)
+        }
     }
 }
