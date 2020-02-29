@@ -11,6 +11,8 @@
 		213F99A70EBA30BC3ACBE162 /* Pods_MovieTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134CB701B38472EFAD1DD61D /* Pods_MovieTime.framework */; };
 		4E3F6064240B02180018749C /* SimilarMovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F6063240B02180018749C /* SimilarMovieCollectionViewCell.swift */; };
 		4E3F6066240B10EA0018749C /* ReviewsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F6065240B10EA0018749C /* ReviewsCollectionViewCell.swift */; };
+		4E3F6068240B19300018749C /* SearchMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F6067240B19300018749C /* SearchMovieViewController.swift */; };
+		4E3F606A240B1B820018749C /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3F6069240B1B820018749C /* SearchViewModel.swift */; };
 		4E71BFCB240931E9006DEB63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E71BFCA240931E9006DEB63 /* AppDelegate.swift */; };
 		4E71BFCF240931E9006DEB63 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E71BFCE240931E9006DEB63 /* DashboardViewController.swift */; };
 		4E71BFD2240931E9006DEB63 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E71BFD0240931E9006DEB63 /* Main.storyboard */; };
@@ -72,6 +74,8 @@
 		177921EC958A83D3FDB3171D /* Pods_MovieTimeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieTimeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E3F6063240B02180018749C /* SimilarMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarMovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		4E3F6065240B10EA0018749C /* ReviewsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E3F6067240B19300018749C /* SearchMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieViewController.swift; sourceTree = "<group>"; };
+		4E3F6069240B1B820018749C /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		4E71BFC7240931E9006DEB63 /* MovieTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E71BFCA240931E9006DEB63 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4E71BFCE240931E9006DEB63 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
@@ -249,6 +253,7 @@
 			children = (
 				4E71BFCE240931E9006DEB63 /* DashboardViewController.swift */,
 				4EC9150F240ACD03007BF568 /* MovieDetailViewController.swift */,
+				4E3F6067240B19300018749C /* SearchMovieViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -270,6 +275,7 @@
 			children = (
 				4EDE1B3E240997E60064C8D3 /* DashboardViewModel.swift */,
 				4EC91511240ACD2D007BF568 /* MovieDetailViewModel.swift */,
+				4E3F6069240B1B820018749C /* SearchViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -478,11 +484,13 @@
 				4E71BFCF240931E9006DEB63 /* DashboardViewController.swift in Sources */,
 				4EC91510240ACD03007BF568 /* MovieDetailViewController.swift in Sources */,
 				4EDE1B1D24098DF90064C8D3 /* MovieCredits.swift in Sources */,
+				4E3F606A240B1B820018749C /* SearchViewModel.swift in Sources */,
 				4EDE1B3F240997E60064C8D3 /* DashboardViewModel.swift in Sources */,
 				4E71C03624093A22006DEB63 /* AppSessionManager.swift in Sources */,
 				4E71C03924095CB6006DEB63 /* Constants.swift in Sources */,
 				4EDE1B1A24098DBC0064C8D3 /* Movie.swift in Sources */,
 				4E3F6066240B10EA0018749C /* ReviewsCollectionViewCell.swift in Sources */,
+				4E3F6068240B19300018749C /* SearchMovieViewController.swift in Sources */,
 				4EDE1AF72409714A0064C8D3 /* NetworkManager+Movies.swift in Sources */,
 				4EDE1AFD240979770064C8D3 /* FetchMovieCreditsRequest.swift in Sources */,
 				4E71C02124093A22006DEB63 /* NetworkRequestConvertible.swift in Sources */,
