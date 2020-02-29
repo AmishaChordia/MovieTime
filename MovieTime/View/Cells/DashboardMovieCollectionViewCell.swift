@@ -28,7 +28,7 @@ final class DashboardMovieCollectionViewCell: UICollectionViewCell {
         movieStarRatingImageView.image = nil
     }
     
-    func setInfo(title: String, date: String, rating: Double?, imagePath: String) {
+    func setInfo(title: String, date: String?, rating: Double?, imagePath: String) {
         movieTitleLabel.text = title
         releaseDateLabel.text = date
         if let rating = rating {
@@ -39,6 +39,6 @@ final class DashboardMovieCollectionViewCell: UICollectionViewCell {
             movieStarRatingImageView.image = nil
             ratingLabel.text = nil
         }
-        movieImageView.sd_setImage(with: URL(string: imagePath), placeholderImage: UIImage(named: "placeholder.png"))
+        movieImageView.sd_setImage(with: URL(string: imagePath), placeholderImage: nil)
     }
 }

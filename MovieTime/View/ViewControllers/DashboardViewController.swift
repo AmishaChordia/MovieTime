@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DashboardViewController: BaseViewController {
+class DashboardViewController: UIViewController {
     
     struct DashboardConstants {
         static let collectionCellPadding: CGFloat = 10

@@ -18,7 +18,13 @@ enum MovieDetailRows: Int, CaseIterable {
 }
 
 class MovieDetailViewController: UIViewController {
-
+    
+    struct MovieDetailViewConstants {
+        static let backdropUrlPath = NetworkManager.shared.imageBaseUrl + Constants.ImageDimension.large
+        static let similarMovieUrlPath = NetworkManager.shared.imageBaseUrl + Constants.ImageDimension.small
+        static let bookButtonReuseId = "BookButtonCell"
+    }
+    
     // MARK - IBOutlets
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -58,8 +64,7 @@ extension MovieDetailViewController: MovieDetailViewModelProtocol {
     
     func didFinishFetchingSynopsis() {
         if let synopsis = viewModel.getSynopsis() {
-            let basePath = NetworkManager.shared.imageBaseUrl + Constants.ImageDimension.large
-            moviePosterImageView.sd_setImage(with: URL(string: basePath + synopsis.backdrop_path), placeholderImage: UIImage(named: "placeholder.png"))
+            moviePosterImageView.sd_setImage(with: URL(string: MovieDetailViewConstants.backdropUrlPath + synopsis.backdrop_path), placeholderImage: nil)
             collectionView.reloadData()
         }
     }
@@ -85,11 +90,9 @@ extension MovieDetailViewController: MovieDetailViewModelProtocol {
     }
 }
 
-
 extension MovieDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return MovieDetailRows.allCases.count
-        return 2
+        return MovieDetailRows.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -108,23 +111,38 @@ extension MovieDetailViewController: UICollectionViewDataSource {
                 cell.setCastInfo(cast: viewModel.getCast().map({ $0.name }))
                 return cell
             }
+            
         case .none:
             break
+            
         case .reviews:
-            break
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewsCollectionViewCell.reuseIdentifier, for: indexPath) as? ReviewsCollectionViewCell {
+                cell.setupView(reviews: viewModel.getReviews().map({ (reviews) -> (review: String, author: String) in
+                    return (reviews.content, reviews.author)
+                }))
+                return cell
+            }
+            
         case .similarMovies:
-            break
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SimilarMovieCollectionViewCell.reuseIdentifier, for: indexPath) as? SimilarMovieCollectionViewCell {
+                let similarMovies = viewModel.getSimilarMovies().map { (movie) -> (imageUrl: String, title: String) in
+                    let movieImageUrl = MovieDetailViewConstants.similarMovieUrlPath + movie.poster_path
+                    return (movieImageUrl, movie.title)
+                }
+                
+                cell.setupView(similarMovies: similarMovies)
+                return cell
+            }
+            
         case .bookButton:
-            break
+            return collectionView.dequeueReusableCell(withReuseIdentifier: MovieDetailViewConstants.bookButtonReuseId, for: indexPath)
         }
-        
-        
         
         return UICollectionViewCell()
     }
 }
 
-extension MovieDetailViewController {
+extension MovieDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                          layout collectionViewLayout: UICollectionViewLayout,
                          sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -134,17 +152,21 @@ extension MovieDetailViewController {
         
         switch rowType {
         case .movieInfo:
-            height = 215
+            height = 205
         case .cast:
-            height = 65
+            height = 110
+        case .reviews:
+            if !viewModel.getReviews().isEmpty {
+                height = 230
+            }
+        case .similarMovies:
+            if !viewModel.getSimilarMovies().isEmpty {
+                height = 250
+            }
+        case .bookButton:
+            height = 90
         case .none:
             break
-        case .reviews:
-            height = 214
-        case .similarMovies:
-            height = 250
-        case .bookButton:
-            height = 60
         }
       
         return CGSize(width: width, height: height)

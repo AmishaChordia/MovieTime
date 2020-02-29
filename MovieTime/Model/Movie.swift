@@ -8,15 +8,13 @@
 
 struct MovieResult: Codable {
     let results: [Movie]
-    let total_results: Int
 }
 
 struct Movie: Codable {
     let vote_average: Double
     let id: Int
-    let release_date: String
+    let release_date: String?
     let title: String
     let backdrop_path: String
     let poster_path: String
-    let vote_count: Double
 }
