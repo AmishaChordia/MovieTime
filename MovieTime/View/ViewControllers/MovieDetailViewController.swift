@@ -101,7 +101,7 @@ extension MovieDetailViewController: UICollectionViewDataSource {
         case .movieInfo:
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieSynopsisCollectionViewCell.reuseIdentifier, for: indexPath) as? MovieSynopsisCollectionViewCell {
                 if let synopsis = viewModel.getSynopsis() {
-                    cell.setView(rating: synopsis.vote_average, date: synopsis.release_date, title: synopsis.original_title, language: synopsis.original_language, descriptionText: synopsis.overview)
+                    cell.setView(rating: synopsis.vote_average, date: synopsis.release_date.formatDate(), title: synopsis.original_title, language: synopsis.original_language, descriptionText: synopsis.overview)
                 }
                 return cell
             }

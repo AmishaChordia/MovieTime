@@ -75,7 +75,7 @@ extension SearchMovieViewController: UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.reuseIdentifier, for: indexPath) as? SearchTableViewCell {
             let currentMovie = viewModel.tableDataSource[indexPath.row]
-            cell.setupView(title: currentMovie.title, date: currentMovie.release_date)
+            cell.setupView(title: currentMovie.title, date: currentMovie.formattedDate)
             return cell
         }
         return UITableViewCell()

@@ -457,7 +457,6 @@
                                                                     <constraint firstAttribute="trailing" secondItem="rYc-7Y-MT2" secondAttribute="trailing" id="S0o-AP-Cc0"/>
                                                                     <constraint firstItem="rYc-7Y-MT2" firstAttribute="top" secondItem="vQ7-kd-dX5" secondAttribute="top" id="at4-1e-Hd3"/>
                                                                     <constraint firstAttribute="bottom" secondItem="TgU-iN-K2Q" secondAttribute="bottom" constant="16" id="mtj-7S-rQg"/>
-                                                                    <constraint firstItem="TgU-iN-K2Q" firstAttribute="centerX" secondItem="vQ7-kd-dX5" secondAttribute="centerX" id="yih-XP-4Wi"/>
                                                                     <constraint firstAttribute="bottom" secondItem="rYc-7Y-MT2" secondAttribute="bottom" id="zU4-TZ-F3d"/>
                                                                 </constraints>
                                                             </collectionViewCellContentView>

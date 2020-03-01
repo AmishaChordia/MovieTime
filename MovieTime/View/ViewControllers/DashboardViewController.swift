@@ -66,7 +66,10 @@ extension DashboardViewController: UICollectionViewDataSource {
         }
         
         let movie = dashboardViewModel.getPlayingNowMovies()[indexPath.item]
-        cell.setInfo(title: movie.title, date: movie.release_date, rating: movie.vote_average, imagePath: DashboardViewController.DashboardConstants.imageUrlPath + movie.poster_path)
+        cell.setInfo(title: movie.title,
+                     date: movie.release_date?.formatDate(),
+                     rating: movie.vote_average,
+                     imagePath: DashboardViewController.DashboardConstants.imageUrlPath + movie.poster_path)
         return cell
     }
 }

@@ -10,11 +10,12 @@ import Foundation
 
 protocol MovieSearchResultType {
     var title: String { get }
-    var release_date: String? { get }
+    var formattedDate: String? { get }
     var id: Int { get }
 }
 
-
-
-
-extension Movie: MovieSearchResultType {}
+extension Movie: MovieSearchResultType {
+    var formattedDate: String? {
+        return release_date?.formatDate()
+    }
+}

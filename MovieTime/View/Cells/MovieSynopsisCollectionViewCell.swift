@@ -26,7 +26,7 @@ final class MovieSynopsisCollectionViewCell: UICollectionViewCell {
         languageLabel.text = nil
     }
     
-    func setView(rating: Double?, date: String, title: String, language: String?, descriptionText: String) {
+    func setView(rating: Double?, date: String?, title: String, language: String?, descriptionText: String) {
         movieTitleLabel.text = title
         releaseDateLabel.text = date
         ratingLabel.text = "\(rating ?? 0)"
