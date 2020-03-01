@@ -36,7 +36,7 @@ class DashboardViewController: UIViewController {
     
     @IBAction func didTapSearchBar(_ sender: UIButton) {
         if let searchViewController = storyboard?.instantiateViewController(withIdentifier: "SearchMovieViewController") as? SearchMovieViewController {
-            searchViewController.movieList = dashboardViewModel.getPlayingNowMovies()
+            searchViewController.allMovieList = dashboardViewModel.getPlayingNowMovies()
             navigationController?.pushViewController(searchViewController, animated: true)
         }
     }

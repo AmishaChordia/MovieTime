@@ -19,6 +19,11 @@ public struct Constants {
         static let searchBarBorderWidth: CGFloat = 0.5
     }
     
+    struct RecentSearches {
+        static let recentSearchKey = "RecentSearch"
+        static let searchBarBorderWidth: CGFloat = 0.5
+    }
+    
     /// Constants for Network
     struct NetworkKeys {
         /// networkTimeout defines the timeout network requests creations in seconds
