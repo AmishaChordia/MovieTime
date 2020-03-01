@@ -19,7 +19,7 @@ struct ViewControllerFactory {
     
     static func getSearchMovieViewController(movieList: [Movie]) -> SearchMovieViewController? {
         let searchViewController = storyboard.instantiateViewController(withIdentifier: "SearchMovieViewController") as? SearchMovieViewController
-        searchViewController?.allMovieList = movieList
+        searchViewController?.viewModel.movieList = movieList
         return searchViewController
     }
 }

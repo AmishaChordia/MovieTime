@@ -32,10 +32,10 @@ class MovieDetailViewModel {
     private var reviews = [MovieReviewResult]()
     private var cast = [MovieCast]()
     private var synopsis: MovieSynopsis?
-    private let networkManager = NetworkManager()
+    private let networkManager = NetworkManager.shared
     weak var delegate: MovieDetailViewModelProtocol?
     
-    var movieIdentifier: String?       
+    var movieIdentifier: String?
     
     init() {}
     

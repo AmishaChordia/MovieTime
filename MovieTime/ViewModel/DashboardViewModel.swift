@@ -25,7 +25,7 @@ class DashboardViewModel {
     }
     
     func fetchPlayingNowMovies() {
-        NetworkManager().fetchPlayingNowMovies(success: { [weak self] (movies) in
+        NetworkManager.shared.fetchPlayingNowMovies(success: { [weak self] (movies) in
             self?.movieList = movies
             self?.delegate?.didFetchPlayingNowMoviesSuccessfully()
         }) { [weak self] (error) in

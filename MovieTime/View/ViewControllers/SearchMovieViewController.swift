@@ -15,13 +15,11 @@ class SearchMovieViewController: UIViewController {
     @IBOutlet weak var searchTableHeaderLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
-    var allMovieList = [Movie]()
     let viewModel = SearchViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        viewModel.movieList = allMovieList
         viewModel.delegate = self
         setupTableView(searchString: "")
     }
@@ -61,7 +59,7 @@ class SearchMovieViewController: UIViewController {
                 searchTableHeaderLabel.text = "Search Results (\(viewModel.tableDataSource.count))"
             }
             else {
-                searchTableHeaderLabel.text = #""No results found for \#(searchString)""#
+                searchTableHeaderLabel.text = #"No results found for "\#(searchString)""#
             }
         }
     }
