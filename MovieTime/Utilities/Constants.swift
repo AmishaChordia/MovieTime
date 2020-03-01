@@ -21,7 +21,7 @@ public struct Constants {
     
     struct RecentSearches {
         static let recentSearchKey = "RecentSearch"
-        static let searchBarBorderWidth: CGFloat = 0.5
+        static let maxRecentSaves = 5
     }
     
     /// Constants for Network

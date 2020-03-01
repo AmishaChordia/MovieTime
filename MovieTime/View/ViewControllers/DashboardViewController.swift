@@ -15,7 +15,7 @@ class DashboardViewController: UIViewController {
         static let collectionCellHeight: CGFloat = 280
         static let imageUrlPath = NetworkManager.shared.imageBaseUrl + Constants.ImageDimension.small
     }
-        
+    
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -35,8 +35,7 @@ class DashboardViewController: UIViewController {
     }
     
     @IBAction func didTapSearchBar(_ sender: UIButton) {
-        if let searchViewController = storyboard?.instantiateViewController(withIdentifier: "SearchMovieViewController") as? SearchMovieViewController {
-            searchViewController.allMovieList = dashboardViewModel.getPlayingNowMovies()
+        if let searchViewController = ViewControllerFactory.getSearchMovieViewController(movieList: dashboardViewModel.getPlayingNowMovies()) {
             navigationController?.pushViewController(searchViewController, animated: true)
         }
     }
@@ -74,8 +73,8 @@ extension DashboardViewController: UICollectionViewDataSource {
 
 extension DashboardViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
-                         layout collectionViewLayout: UICollectionViewLayout,
-                         sizeForItemAt indexPath: IndexPath) -> CGSize {
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.frame.size.width - DashboardConstants.collectionCellPadding)/2
         return CGSize(width: width, height: DashboardConstants.collectionCellHeight)
     }
@@ -83,8 +82,7 @@ extension DashboardViewController: UICollectionViewDelegateFlowLayout {
 
 extension DashboardViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let detailViewController = storyboard?.instantiateViewController(withIdentifier: "MovieDetailViewController") as? MovieDetailViewController {
-            detailViewController.movieId = String(dashboardViewModel.getPlayingNowMovies()[indexPath.item].id)
+        if let detailViewController = ViewControllerFactory.getMovieDetailViewController(movieId: String(dashboardViewModel.getPlayingNowMovies()[indexPath.item].id)) {
             navigationController?.pushViewController(detailViewController, animated: true)
         }
     }

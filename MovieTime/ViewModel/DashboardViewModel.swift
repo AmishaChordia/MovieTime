@@ -16,7 +16,6 @@ protocol DashboardViewModelProtocol: class {
 class DashboardViewModel {
     
     private var movieList = [Movie]()
-    
     weak var delegate: DashboardViewModelProtocol?
     
     init() {}

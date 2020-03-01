@@ -9,125 +9,120 @@
 import Foundation
 
 protocol SearchViewModelProtocol: class {
-    func someMethod()
+    func reloadTableView()
 }
 
 final class SearchViewModel {
-   
-    var mapping = SearchAutoComplete()
+
     weak var delegate: SearchViewModelProtocol?
+
+    private let trieMapping = SearchAutoComplete()
+    private(set) var tableDataSource = [MovieSearchResultType]() {
+        didSet {
+            delegate?.reloadTableView()
+        }
+    }
     
     var movieList = [Movie]() {
         didSet {
             let movieTitles = movieList.map({ $0.title })
-            mapping.createPhraseToNodeMappings(phrases: movieTitles)
+            trieMapping.createPhraseToNodeMappings(phrases: movieTitles)
         }
     }
     
     init() {}
     
-    func getRecentSearchedMovies() -> [MovieSearchResultType] {
-        return UserDefaults.standard.value(forKey: Constants.RecentSearches.recentSearchKey) as? [MovieSearchResultType] ?? []
-    }
-    
-    func setRecentSearchMovie(movie: MovieSearchResultType) {
-        if var recents = UserDefaults.standard.value(forKey: Constants.RecentSearches.recentSearchKey) as? [MovieSearchResultType] {
-            recents.append(movie)
-            UserDefaults.standard.set(recents, forKey: Constants.RecentSearches.recentSearchKey)
-        }
-    }
-    
-    func getSearchResults(searchString: String) -> [MovieSearchResultType] {
-        
-        
-        
-        return []
-    }
-}
-
-class SearchAutoComplete {
-    var nodeLookUpTable = [String: Node]() // {"h": Node(), b: Node() ...} - Root Nodes
-    
-    func createPhraseToNodeMappings(phrases: [String]) {
-        
-        for (itemIndex, phrase) in phrases.enumerated() {
-            // phrase is "Dil Toh pagal hai"
-            let currentPhrase = phrase.lowercased()
-            
-            // wordEmbeddings is "Dil" "Toh" "Pagal"
-            let wordEmbeddings = Array(currentPhrase.split(separator: " "))
-            
-            for word in wordEmbeddings {
-                // word is  "Dil"
-                
-                var prevNode: Node?
-                
-                for (index, alphabet) in word.enumerated() {
-                    let nodeValue = String(alphabet)
-                    let isLastNode = index == word.count - 1
-
-                    if index == 0 {
-                        // This is Root Node "D"
-                        if nodeLookUpTable[nodeValue] == nil {
-                            
-                            // This is new root node
-                            let rootNode = Node(value: nodeValue, children: [], isLastNode: isLastNode, associatedItems: [itemIndex])
-                            prevNode = rootNode
-                            
-                            // add to look up
-                            nodeLookUpTable[nodeValue] = prevNode
-                        }
-                        else {
-                            prevNode = nodeLookUpTable[nodeValue]
-                            prevNode?.associatedItems.append(itemIndex)
-                        }
-                    }
-                    else {
-                        // not root node - "i" / "l"
-                        // check if this was already a child of prev node
-                        
-                        if let existingNode = prevNode?.children.filter({ $0.value == nodeValue }).first {
-                           // If YES, append associated item
-
-                            existingNode.associatedItems.append(itemIndex)
-                            prevNode = existingNode
-                        }
-                        else {
-                            // add new child
-                            let newNode = Node(value: nodeValue, children: [], isLastNode: isLastNode, associatedItems: [itemIndex])
-                            prevNode?.children.append(newNode)
-                            prevNode = newNode
-                        }
-                    }
+    func updateRecentSearchedMovies() {
+        var recents = [MovieSearchResultType]()
+        if let recentMovieIds = UserDefaults.standard.value(forKey: Constants.RecentSearches.recentSearchKey) as? [Int] {
+            recentMovieIds.forEach { (id) in
+                if let movie = movieList.first(where: { $0.id == id }) {
+                    recents.append(movie)
                 }
             }
         }
+        tableDataSource = recents.reversed()
     }
     
-    func logNode(node: Node) {
-        print("************")
-        print("Node value is \(node.value))")
-        print("Children of \(node.value) are ..")
-        print(node.children.map({ $0.value }))
-        print("************")
-      
-        for child in node.children {
-            logNode(node: child)
+    func setRecentSearchMovie(movie: MovieSearchResultType) {
+        if var recentMovieIds = UserDefaults.standard.value(forKey: Constants.RecentSearches.recentSearchKey) as? [Int] {
+            recentMovieIds.removeAll(where: { $0 == movie.id })
+            recentMovieIds.append(movie.id)
+
+            if recentMovieIds.count > Constants.RecentSearches.maxRecentSaves {
+                recentMovieIds = Array(recentMovieIds[1..<6])
+            }
+            UserDefaults.standard.set(recentMovieIds, forKey: Constants.RecentSearches.recentSearchKey)
         }
+        else {
+            UserDefaults.standard.set([movie.id], forKey: Constants.RecentSearches.recentSearchKey)
+        }
+        updateRecentSearchedMovies()
     }
-}
-
-class Node {
-    var value: String
-    var children: [Node]
-    var isLastNode: Bool
-    var associatedItems: [Int]
     
-    init(value: String, children: [Node], isLastNode: Bool, associatedItems: [Int]) {
-        self.value = value
-        self.children = children
-        self.isLastNode = isLastNode
-        self.associatedItems = associatedItems
+    func updateSearchResults(searchString: String) {
+        let searchText = searchString.lowercased()
+        let tokenizedSententce = searchText.split(separator: " ")
+        var associatedItems: [Int]?
+        
+        for word in tokenizedSententce {
+            let currentAssociatedItemList = traverseWord(searchString: String(word))
+            if currentAssociatedItemList.isEmpty {
+                associatedItems = []
+                break
+            }
+            
+            if associatedItems == nil {
+                associatedItems = currentAssociatedItemList
+            }
+            
+            associatedItems = Array(Set(associatedItems ?? []).intersection(Set(currentAssociatedItemList)))
+        }
+        
+        // Re-map to movies
+        var searchFilteredMovies = [MovieSearchResultType]()
+        associatedItems?.forEach { (itemIndex) in
+            searchFilteredMovies.append(movieList[itemIndex])
+        }
+        
+        tableDataSource = searchFilteredMovies
+    }
+    
+    
+    /// Traverse each word to find associated movie names
+    /// - Parameter searchString: Word ex- "Dil" "Pagal"
+    private func traverseWord(searchString: String) -> [Int] {
+        var prevNode: Node?
+        var associatedItems = [Int]()
+        
+        for (index, searchCharacter) in searchString.enumerated() {
+            let currentCharacter = String(searchCharacter)
+            
+            if index == 0 {
+                if let rootNode = trieMapping.nodeLookUpTable[currentCharacter] {
+                    associatedItems = rootNode.associatedItems
+                    prevNode = rootNode
+                }
+                else {
+                    // No such root found, so not a valid word to search
+                    print("No such root found, so not a valid word to search")
+                    return []
+                }
+            }
+            else {
+                let child = prevNode?.children.first(where: ({ $0.value == currentCharacter }))
+                
+                if let childNode = child {
+                    associatedItems = childNode.associatedItems
+                    prevNode = child
+                }
+                else {
+                    print("No such child of prev node")
+                    // No such child of prev node
+                    return []
+                }
+            }
+        }
+        return associatedItems
     }
 }
-

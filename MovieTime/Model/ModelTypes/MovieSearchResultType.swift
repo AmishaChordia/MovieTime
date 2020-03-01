@@ -14,4 +14,7 @@ protocol MovieSearchResultType {
     var id: Int { get }
 }
 
+
+
+
 extension Movie: MovieSearchResultType {}
